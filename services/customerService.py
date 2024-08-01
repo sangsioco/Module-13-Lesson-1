@@ -2,7 +2,8 @@ from sqlalchemy.orm import Session
 from database import db
 from models.customer import Customer
 from circuitbreaker import circuit
-from sqlalchemy import select
+from sqlalchemy import select, func
+from models.order import Order
 
 def fallback_function(customer):
     return None
@@ -36,3 +37,19 @@ def find_all():
     customers = db.session.execute(query).scalars().all()
     return customers
 
+def find_total_order_value(threshold: float):
+    with Session(db.engine) as session:
+        # Query to calculate the total value of orders placed by each customer
+        total_order_value_query = (
+            session.query(
+                Customer.name,
+                func.sum(Order.total_value).label('total_order_value')
+            )
+            .join(Order, Customer.id == Order.customer_id)
+            .group_by(Customer.name)
+            .having(func.sum(Order.total_value) >= threshold)
+            .order_by(func.sum(Order.total_value).desc())  # Optional: order by total value
+        )
+
+        results = total_order_value_query.all()
+        return results

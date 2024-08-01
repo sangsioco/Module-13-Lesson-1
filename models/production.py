@@ -12,3 +12,6 @@ class Production(Base):
 
     product: Mapped["Product"] = db.relationship("Product", back_populates="productions")
 
+     # adding relationship between employee and production for m13l2 assginment
+    employee: Mapped["Employee"] = db.relationship("Employee", back_populates="productions")
+

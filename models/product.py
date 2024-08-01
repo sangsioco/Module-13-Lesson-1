@@ -10,4 +10,4 @@ class Product(Base):
     price: Mapped[float] = mapped_column(db.Float, nullable=False)
 
     orders: Mapped[List["Order"]] = db.relationship("Order", secondary=order_product, back_populates="products")
-    productions = db.relationship("Production", back_populates="product")
+    productions: Mapped[list["Production"]] = db.relationship("Production", back_populates="product")
