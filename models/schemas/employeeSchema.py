@@ -1,9 +1,10 @@
-from marshmallow import Schema, fields, validate
+from marshmallow import fields
+from schema import ma
 
-class EmployeeSchema(Schema):
+class EmployeeSchema(ma.Schema):
     id = fields.Int(dump_only=True)
-    name = fields.Str(required=True, validate=validate.Length(min=1))
-    position = fields.Str(required=True, validate=validate.Length(min=1))
+    name = fields.Str(required=True)
+    position = fields.Str(required=True)
 
 employee_schema = EmployeeSchema()
 employees_schema = EmployeeSchema(many=True)

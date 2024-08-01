@@ -1,13 +1,14 @@
-from sqlalchemy import Column, Integer, Date, ForeignKey
-from sqlalchemy.orm import relationship
-from database import Base
+from sqlalchemy.orm import Mapped, mapped_column
+from database import db, Base
+from datetime import date
 
 class Production(Base):
     __tablename__ = 'productions'
 
-    id = Column(Integer, primary_key=True)
-    product_id = Column(Integer, ForeignKey('products.id'), nullable=False)
-    quantity_produce = Column(Integer, nullable=False)
-    date_produce = Column(Date, nullable=False)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    product_id: Mapped[int] = mapped_column(db.ForeignKey('Products.id'), nullable=False)
+    quantity_produced: Mapped[int] = mapped_column(db.Integer, nullable=False)
+    date_produced: Mapped[date] = mapped_column(db.Date, nullable=False)
 
-    product = relationship('Product', back_populates='productions')
+    product: Mapped["Product"] = db.relationship("Product", back_populates="productions")
+
