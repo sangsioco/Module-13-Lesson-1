@@ -17,7 +17,14 @@ def save(customer_data):
             with session.begin():
                 new_customer = Customer(name=customer_data['name'], email=customer_data['email'], phone=customer_data['phone'])
                 session.add(new_customer)
-                session.commit()
+
+
+                savepoint = session.begin_nested()
+                new_nested_customer = Customer(name=customer_data['name'], email=customer_data['email'], phone=customer_data['phone'])
+                session.add(new_nested_customer)
+
+                savepoint.rollbacl()
+
             session.refresh(new_customer)
             return new_customer
     
@@ -28,3 +35,4 @@ def find_all():
     query = select(Customer)
     customers = db.session.execute(query).scalars().all()
     return customers
+

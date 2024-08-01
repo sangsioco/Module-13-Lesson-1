@@ -35,3 +35,14 @@ def save(order_data):
             session.refresh(product)
         
         return new_order
+    
+# GET display all order
+def find_all():
+    query = select(Order)
+    orders = db.session.execute(query).scalars().all()
+    return orders
+
+# Adding pagination for orders
+def find_all_pagination(page=1, per_page=10):
+    orders = db.paginate(select(Order), page=page, per_page=per_page)
+    return orders

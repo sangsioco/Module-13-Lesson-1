@@ -18,6 +18,7 @@ from routes.productBP import product_blueprint
 from routes.orderBP import order_blueprint
 from routes.employeeBP import employee_blueprint
 from routes.productionBP import production_blueprint
+from routes.customerAccountBP import customer_account_blueprint
 
 
 def create_app(config_name):
@@ -37,7 +38,8 @@ def blue_print_config(app):
     app.register_blueprint(order_blueprint, url_prefix='/orders')
     app.register_blueprint(employee_blueprint, url_prefix='/employees')
     app.register_blueprint(production_blueprint, url_prefix='/productions')
-    
+    app.register_blueprint(customer_account_blueprint, url_prefix='/accounts')
+
 def configure_rate_limit():
     limiter.limit("5 per day")(customer_blueprint)
 
